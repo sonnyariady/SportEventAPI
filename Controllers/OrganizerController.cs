@@ -54,7 +54,7 @@ namespace SportEventAPI.Controllers
             }
             else
             {
-                var mapNotOK = ObjectMapper.Mapper.Map<OrganizerGlobalOutputDto>(result.data);
+                var mapNotOK = ObjectMapper.Mapper.Map<OrganizerGlobalOutputDto>(result);
                 return BadRequest(mapNotOK);
             }
         }

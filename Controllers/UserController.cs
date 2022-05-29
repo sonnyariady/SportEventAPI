@@ -39,7 +39,7 @@ namespace SportEventAPI.Controllers
             }
             else
             {
-                var mapNotOK = ObjectMapper.Mapper.Map<UserGlobalOutputDto>(result.data);
+                var mapNotOK = ObjectMapper.Mapper.Map<UserGlobalOutputDto>(result);
                 return BadRequest(mapNotOK);
             }
 
@@ -59,7 +59,7 @@ namespace SportEventAPI.Controllers
             }
             else
             {
-                var mapNotOK = ObjectMapper.Mapper.Map<LoginResultGlobalOutputDto>(result.data);
+                var mapNotOK = ObjectMapper.Mapper.Map<LoginResultGlobalOutputDto>(result);
                 return BadRequest(mapNotOK);
             }
 
@@ -78,7 +78,7 @@ namespace SportEventAPI.Controllers
             }
             else
             {
-                var mapNotOK = ObjectMapper.Mapper.Map<LoginResultGlobalOutputDto>(result.data);
+                var mapNotOK = ObjectMapper.Mapper.Map<LoginResultGlobalOutputDto>(result);
                 return BadRequest(mapNotOK);
             }
         }
@@ -95,7 +95,7 @@ namespace SportEventAPI.Controllers
             }
             else
             {
-                var mapNotOK = ObjectMapper.Mapper.Map<UserGlobalOutputDto>(result.data);
+                var mapNotOK = ObjectMapper.Mapper.Map<UserGlobalOutputDto>(result);
                 return BadRequest(mapNotOK);
             }
         }
