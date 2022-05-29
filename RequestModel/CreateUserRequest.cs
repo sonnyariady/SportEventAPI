@@ -22,4 +22,11 @@ namespace SportEventAPI.RequestModel
         public string Email { get; set; }
         public string Password { get; set; }
     }
+
+    public class ChangePasswordRequest
+    {
+        public string OldPassword { get; set; }
+        public string NewPassword { get; set; }
+        public string RepeatPassword { get; set; }
+    }
 }

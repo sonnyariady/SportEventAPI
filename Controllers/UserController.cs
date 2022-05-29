@@ -66,10 +66,10 @@ namespace SportEventAPI.Controllers
         }
 
         [MapToApiVersion("1.0")]
-        [HttpPost("ChangePassword")]
-        public async Task<IActionResult> ChangePassword(LoginRequest input)
+        [HttpPut("{id}/Password")]
+        public async Task<IActionResult> ChangePassword(long id, ChangePasswordRequest input)
         {
-            var result = await _userServices.ChangePassword(input);
+            var result = await _userServices.ChangePassword(id, input);
 
             if (result.data != null)
             {

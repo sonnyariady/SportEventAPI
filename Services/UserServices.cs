@@ -92,6 +92,27 @@ namespace SportEventAPI.Services
                     }
                 }
 
+                if (string.IsNullOrWhiteSpace(input.RepeatPassword))
+                {
+                    globaloutput.status_code = 422;
+                    globaloutput.errors.RepeatPassword = new List<string>();
+                    globaloutput.errors.RepeatPassword.Add("The RepeatPassword field is required.");
+                    isValid = false;
+                }
+                else
+                {
+                    if (input.RepeatPassword != input.Password)
+                    {
+                        isValid = false;
+                        globaloutput.status_code = 422;
+                        if (globaloutput.errors.RepeatPassword == null)
+                        {
+                            globaloutput.errors.RepeatPassword = new List<string>();
+                        }
+                        globaloutput.errors.RepeatPassword.Add("The RepeatPassword must be same with Password.");
+                    }
+                }
+
                 if (isValid)
                 {
                     HashSalt hashSalt = HashSalt.GenerateSaltedHash(64, input.Password);
@@ -177,29 +198,64 @@ namespace SportEventAPI.Services
         }
 
 
-        public async Task<LoginResultGlobalOutput> ChangePassword(LoginRequest input)
+        public async Task<LoginResultGlobalOutput> ChangePassword(long id, ChangePasswordRequest input)
         {
             LoginResultGlobalOutput globalres = new LoginResultGlobalOutput();
+            bool IsValid = true;
             try
             {
-                User user = await _context.Users.FirstOrDefaultAsync(a => a.Email == input.Email);
+                User user = await _context.Users.FindAsync(id); 
 
                 if (user == null)
                 {
                     globalres.status_code = 422;
-                    globalres.message = "Email is not found";
+                    globalres.message = "User id is not registered";
+                    IsValid = false;
                 }
 
-                HashSalt hashSalt = HashSalt.GenerateSaltedHash(64, input.Password);
+                HashSalt hashSalt = HashSalt.GenerateSaltedHash(64, input.OldPassword);
                 var Pwd = hashSalt.Hash;
                 var Salt = hashSalt.Salt;
 
-                if (input.Password != Pwd)
+                if (input.OldPassword != Pwd)
                 {
                     globalres.status_code = 422;
-                    globalres.message = "Invalid password";
+                    globalres.message = "Old password is wrong";
+                    IsValid = false;
                 }
 
+                if (string.IsNullOrEmpty(input.NewPassword))
+                {
+                    globalres.status_code = 422;
+                    globalres.message = "Please input New password is wrong";
+                    IsValid = false;
+                }
+
+                if (string.IsNullOrEmpty(input.RepeatPassword))
+                {
+                    globalres.status_code = 422;
+                    globalres.message = "Please input Repeat password is wrong";
+                    IsValid = false;
+                }
+
+                if (input.RepeatPassword != input.NewPassword)
+                {
+                    globalres.status_code = 422;
+                    globalres.message = "Repeat Password is not same with New Password";
+                    IsValid = false;
+                }
+
+                if (IsValid)
+                {
+                    hashSalt = HashSalt.GenerateSaltedHash(64, input.NewPassword);
+                    user.Password = hashSalt.Hash;
+                    user.PasswordSalt = hashSalt.Salt;
+                    _context.Entry(user).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+
+                     
+
+                }
 
             }
             catch (Exception ex)

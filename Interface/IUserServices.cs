@@ -11,7 +11,7 @@ namespace SportEventAPI.Interface
     {
         Task<UserGlobalOutput> Create(CreateUserRequest input);
         Task<LoginResultGlobalOutput> Login(LoginRequest input);
-        Task<LoginResultGlobalOutput> ChangePassword(LoginRequest input);
+        Task<LoginResultGlobalOutput> ChangePassword(long id, ChangePasswordRequest input);
         Task<UserGlobalOutput> Edit(long id, BasicUserRequest input);
         Task<bool> Delete(long id);
         Task<UserResponse> GetById(long id);
