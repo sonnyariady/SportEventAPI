@@ -143,6 +143,7 @@ namespace SportEventAPI.Services
         public async Task<LoginResultGlobalOutput> Login(LoginRequest input)
         {
             LoginResultGlobalOutput globalres = new LoginResultGlobalOutput();
+            bool IsValid = true;
             try
             {
                 User user = await _context.Users.FirstOrDefaultAsync(a => a.Email == input.Email);
@@ -150,6 +151,7 @@ namespace SportEventAPI.Services
                 if (user == null)
                 {
                     globalres.status_code = 422;
+                    IsValid = false;
                     globalres.message = "Email is not found";
                 }
 
@@ -157,13 +159,19 @@ namespace SportEventAPI.Services
                 var Pwd = hashSalt.Hash;
                 var Salt = hashSalt.Salt;
 
-                if (input.Password != Pwd)
+                var isVerifyPassword = HashSalt.VerifyPassword(input.Password, user.Password, user.PasswordSalt);
+
+                if (!isVerifyPassword)
                 {
                     globalres.status_code = 422;
+                    IsValid = false;
                     globalres.message = "Invalid password";
                 }
 
-                var claims = new[] {
+                if (IsValid)
+                {
+
+                    var claims = new[] {
                     new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
@@ -173,22 +181,23 @@ namespace SportEventAPI.Services
                     new Claim("Email", user.Email)
                    };
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
 
-                var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                    var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                var token = new JwtSecurityToken(
-                    _configuration["Jwt:Issuer"],
-                    _configuration["Jwt:Audience"],
-                    claims,
-                    expires: DateTime.UtcNow.AddDays(1),
-                    signingCredentials: signIn);
+                    var token = new JwtSecurityToken(
+                        _configuration["Jwt:Issuer"],
+                        _configuration["Jwt:Audience"],
+                        claims,
+                        expires: DateTime.UtcNow.AddDays(1),
+                        signingCredentials: signIn);
 
-                LoginResult loginResult = new LoginResult();
-                loginResult.Email = user.Email;
-                loginResult.Id = user.Id;
-                loginResult.token = new JwtSecurityTokenHandler().WriteToken(token);
-                globalres.data = loginResult;
+                    LoginResult loginResult = new LoginResult();
+                    loginResult.Email = user.Email;
+                    loginResult.Id = user.Id;
+                    loginResult.token = new JwtSecurityTokenHandler().WriteToken(token);
+                    globalres.data = loginResult;
+                }
             }
             catch (Exception ex)
             {
