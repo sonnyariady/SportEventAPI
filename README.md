@@ -4,7 +4,7 @@ This repository contains the Sport Event REST service, built with ASP.NET Core 3
 ## Prerequisites
 
 * Visual Studio 2019
-* ASP.NET Core 3.1
+* ASP.NET Core 5.0
 * SQL Server 2019
 * Postman
 
