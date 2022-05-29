@@ -222,11 +222,11 @@ namespace SportEventAPI.Services
                     IsValid = false;
                 }
 
-                HashSalt hashSalt = HashSalt.GenerateSaltedHash(64, input.OldPassword);
-                var Pwd = hashSalt.Hash;
-                var Salt = hashSalt.Salt;
+                var isVerifyPassword = HashSalt.VerifyPassword(input.OldPassword, user.Password, user.PasswordSalt);
 
-                if (input.OldPassword != Pwd)
+               
+
+                if (!isVerifyPassword)
                 {
                     globalres.status_code = 422;
                     globalres.message = "Old password is wrong";
@@ -256,13 +256,16 @@ namespace SportEventAPI.Services
 
                 if (IsValid)
                 {
-                    hashSalt = HashSalt.GenerateSaltedHash(64, input.NewPassword);
+                    HashSalt hashSalt = HashSalt.GenerateSaltedHash(64, input.NewPassword);
+                    var Pwd = hashSalt.Hash;
+                    var Salt = hashSalt.Salt;
+
                     user.Password = hashSalt.Hash;
                     user.PasswordSalt = hashSalt.Salt;
                     _context.Entry(user).State = EntityState.Modified;
                     await _context.SaveChangesAsync();
 
-                     
+                    globalres.message = "Success";
 
                 }
 
