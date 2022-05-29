@@ -43,12 +43,24 @@ namespace SportEventAPI.Helper
             CreateMap<UserGlobalOutput, UserGlobalOutputDto>().ReverseMap();
             #endregion
 
+            #region UserValidationItem <=> UserValidationItemDto
+            CreateMap<UserValidationItem, UserValidationItemDto>().ReverseMap();
+            #endregion
+
             #region OrganizerGlobalOutput <=> OrganizerGlobalOutputDto
             CreateMap<OrganizerGlobalOutput, OrganizerGlobalOutputDto>().ReverseMap();
             #endregion
 
+            #region OrganizerValidationItem <=> OrganizerValidationItemDto
+            CreateMap<OrganizerValidationItem, OrganizerValidationItemDto>().ReverseMap();
+            #endregion
+
             #region EventOrganizerResponse <=> EventOrganizerResponseDto
             CreateMap<EventOrganizerResponse, EventOrganizerResponseDto>().ReverseMap();
+            #endregion
+
+            #region EventValidationItem <=> EventValidationItemDto
+            CreateMap<EventValidationItem, EventValidationItemDto>().ReverseMap();
             #endregion
         }
     }
