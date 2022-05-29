@@ -66,7 +66,7 @@ namespace SportEventAPI.Controllers
         public async Task<IActionResult> GetAll(int page, int perPage, long organizerId)
         {
             var result = await _eventServices.GetAll(organizerId, page, perPage);
-            var mapp = ObjectMapper.Mapper.Map<List<EventDto>>(result);
+            var mapp = ObjectMapper.Mapper.Map<List<EventOrganizerResponseDto>>(result);
             return Ok(mapp);
 
         }
