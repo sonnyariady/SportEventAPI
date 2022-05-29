@@ -1,5 +1,5 @@
-# SportEventAPI [CRUD Restful using ASP.Net Core 3.1 with JWT Authorization]
-This repository contains the Sport Event REST service, built with ASP.NET Core 3.1 and Entity Framework 3.1 to illustrate creating REST API to performing CRUD actions and, how to create JWT token and secure API.
+# SportEventAPI [CRUD Restful using ASP.Net Core 35.0 with JWT Authorization]
+This repository contains the Sport Event REST service, built with ASP.NET Core 5.0 and Entity Framework 3.1 to illustrate creating REST API to performing CRUD actions and, how to create JWT token and secure API.
 
 ## Prerequisites
 
