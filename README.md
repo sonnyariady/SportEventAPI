@@ -1,4 +1,4 @@
-# InventoryAPI [CRUD Restful using ASP.Net Core 3.1 with JWT Authorization]
+# SportEventAPI [CRUD Restful using ASP.Net Core 3.1 with JWT Authorization]
 This repository contains the inventory management REST service, built with ASP.NET Core 3.1 and Entity Framework 3.1 to illustrate creating REST API to performing CRUD actions and, how to create JWT token and secure API.
 
 ## Prerequisites
@@ -19,4 +19,4 @@ This repository contains the inventory management REST service, built with ASP.N
 ## How to Run using SWAGGER-UI
 
 * type in the address browser https://localhost:<port>/swagger/index.html
-![Screenshot](https://github.com/mahendraputra21/InventoryAPI/blob/main/InventoryAPI.png)
+ 
